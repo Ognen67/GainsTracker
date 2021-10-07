@@ -47,8 +47,6 @@ public class WorkoutController {
         workoutService.deleteWorkoutById(id);
     }
 
-    // Exercises Part
-
     @PostMapping("/workouts/{workoutId}/exercise")
     public void addExerciseToWorkout(@PathVariable Long workoutId,
                                      @RequestBody Exercise exercise) {
