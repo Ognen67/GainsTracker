@@ -51,4 +51,8 @@ public class Exercise {
     public void setSets(List<Set> sets) {
         this.sets = sets;
     }
+
+    public void deleteSetForExerciseById(Long setId) {
+        this.sets.removeIf(s -> s.getId().equals(setId));
+    }
 }

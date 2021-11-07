@@ -1,5 +1,6 @@
 package com.example.workouttracker.model;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
@@ -7,8 +8,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "workouts")
-public class Workout {
+@Entity(name = "workout_templates")
+public class WorkoutTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +18,6 @@ public class Workout {
     private String name;
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Exercise> exercises;
-
-    private WorkoutStatus status;
 
     public List<Exercise> getExercises() {
         return exercises;
@@ -32,17 +31,16 @@ public class Workout {
         this.exercises.add(exercise);
     }
 
-    public Workout() {
+    public WorkoutTemplate() {
     }
 
-    public Workout(@JsonProperty("name") String name) {
+    public WorkoutTemplate(@JsonProperty("name") String name) {
         this.name = name;
         this.exercises = new ArrayList<Exercise>();
-        this.status = WorkoutStatus.STARTED;
     }
-
-//    public Workout(@JsonProperty("name") String name,
-//                   @JsonProperty("exercises") List<Exercise> exercises) {
+//
+//    public WorkoutTemplate(@JsonProperty("name") String name,
+//                           @JsonProperty("exercises") List<Exercise> exercises) {
 //        this.name = name;
 //        this.exercises = exercises;
 //    }

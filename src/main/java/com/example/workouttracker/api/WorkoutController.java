@@ -3,22 +3,28 @@ package com.example.workouttracker.api;
 import com.example.workouttracker.model.Exercise;
 import com.example.workouttracker.model.Set;
 import com.example.workouttracker.model.Workout;
+import com.example.workouttracker.service.ExerciseService;
+import com.example.workouttracker.service.SetService;
 import com.example.workouttracker.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class WorkoutController {
 
     private final WorkoutService workoutService;
+    private final ExerciseService exerciseService;
+    private final SetService setService;
 
     @Autowired
-    public WorkoutController(WorkoutService workoutService) {
+    public WorkoutController(WorkoutService workoutService, ExerciseService exerciseService, SetService setService) {
         this.workoutService = workoutService;
+        this.exerciseService = exerciseService;
+        this.setService = setService;
     }
 
     @GetMapping("/workouts/{id}")
@@ -54,6 +60,28 @@ public class WorkoutController {
         Workout workout = workoutService.getWorkoutById(workoutId);
         workout.addExercise(exercise);
         workoutService.updateWorkoutById(workoutId, workout);
+    }
+
+    @GetMapping("/workouts/{workoutId}/exercise/{exerciseId}")
+    public Exercise getExerciseForWorkout(@PathVariable Long workoutId,
+                                      @PathVariable Long exerciseId) {
+        return this.workoutService.getExerciseForWorkout(workoutId, exerciseId);
+    }
+
+    @GetMapping("/workouts/{workoutId}/exercise/{exerciseId}/sets")
+    public List<Set> getSetsForExerciseForWorkout(@PathVariable Long workoutId,
+                                                  @PathVariable Long exerciseId) {
+        Exercise exerciseForWorkout = this.workoutService.getExerciseForWorkout(workoutId, exerciseId);
+        return exerciseForWorkout.getSets();
+
+    }
+
+    @DeleteMapping("/workouts/{workoutId}/exercise/{exerciseId}/set/{setId}")
+    public void deleteSetById(@PathVariable Long workoutId,
+                              @PathVariable Long exerciseId,
+                              @PathVariable Long setId) {
+        exerciseService.getExerciseById(exerciseId).deleteSetForExerciseById(setId);
+        setService.deleteSetById(setId);
     }
 
     @PostMapping("/workouts/{workoutId}/exercise/{exerciseId}")

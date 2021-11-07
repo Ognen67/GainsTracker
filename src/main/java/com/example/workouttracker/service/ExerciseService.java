@@ -1,8 +1,9 @@
 package com.example.workouttracker.service;
 
 import com.example.workouttracker.model.Exercise;
-import com.example.workouttracker.model.Workout;
 import com.example.workouttracker.repository.ExerciseRepository;
+import com.example.workouttracker.repository.ExerciseTemplatesRepository;
+import com.example.workouttracker.repository.SetRepository;
 import com.example.workouttracker.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,13 @@ public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
     private final WorkoutRepository workoutRepository;
+    private final SetRepository setRepository;
 
     @Autowired
-    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository) {
+    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutRepository workoutRepository, SetRepository setRepository) {
         this.exerciseRepository = exerciseRepository;
         this.workoutRepository = workoutRepository;
+        this.setRepository = setRepository;
     }
 
     public ArrayList<Exercise> getAllExercisesForWorkout(Long workoutId) {
@@ -56,6 +59,16 @@ public class ExerciseService {
         }
         return Optional.empty();
     }
+
+
+//    @Transactional
+//    public void deleteSetById(Long setId) {
+//        setRepository.deleteSetById(setId);
+//    }
+
+//    public Set getSetFromExerciseById(Long exerciseId, Long setId) {
+//        return this.exerciseRepository.getSetFromExerciseById(exerciseId, setId);
+//    }
 
 
 }

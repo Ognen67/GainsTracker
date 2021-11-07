@@ -1,27 +1,31 @@
 package com.example.workouttracker.api;
 
-import com.example.workouttracker.model.Exercise;
 import com.example.workouttracker.service.ExerciseService;
+import com.example.workouttracker.service.SetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/exercises")
 public class ExerciseController {
 
     private final ExerciseService exerciseService;
+    private final SetService setService;
 
     @Autowired
-    public ExerciseController(ExerciseService exerciseService) {
+    public ExerciseController(ExerciseService exerciseService, SetService setService) {
         this.exerciseService = exerciseService;
+        this.setService = setService;
     }
 
-////    @GetMapping("/workouts/{id}/exercises")
-//////    public Exercise getExerciseById(@PathVariable Long id) {
-//////        return exerciseService.getExerciseById(id);
-//////    }
+    @DeleteMapping("/{exerciseId}/set/{setId}")
+    public void deleteSetById(@PathVariable Long exerciseId,
+                              @PathVariable Long setId) {
+        exerciseService.getExerciseById(exerciseId).deleteSetForExerciseById(setId);
+        setService.deleteSetById(setId);
+    }
+
 ////
 ////    @GetMapping("/workouts/{workoutId}/exercises")
 ////    public List<Exercise> getAllExercisesForWorkoutId(@PathVariable Long workoutId) {

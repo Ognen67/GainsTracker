@@ -1,16 +1,17 @@
 package com.example.workouttracker.repository;
 
-import com.example.workouttracker.model.Exercise;
 import com.example.workouttracker.model.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
 
 @Repository
-public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
+public interface SetRepository extends JpaRepository<Set, Long> {
 
-    public ArrayList<Exercise> findExercisesById(Long workoutId);
-
+    @Transactional
+    @Modifying
+    public void deleteById(Long setId);
 }
