@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    password: 1qazZAQ!23
+    url: jdbc:postgresql://localhost:5432/gainstracker
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  flyway:
+    check-location: true
+    locations: classpath:db/migration
+    schemas: public
+    enabled: true
+
+  mail:
+    host: localhost
+    port: 1025
+    username: hello
+    password: hello
+
+  properties:
+    mail:
+      smtp:
+        ssl:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+    connectiontimeout: 5000
+    timeout: 3000
+    writetimeout: 5000
+
+#  spring.datasource.url=jdbc:postgresql://localhost:5432/gainstracker
+#  spring.datasource.username=postgres
+#  spring.datasource.password=1qazZAQ!23
+#  spring.jpa.hibernate.ddl-auto=create-drop
+#  spring.jpa.show-sql=true
+#  spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+#  spring.jpa.properties.hibernate.format_sql=true
+#  spring.flyway.check-location=true
+#  spring.flyway.locations=classpath:db/migration
+#  spring.flyway.schemas=public
+#  spring.flyway.enabled=true

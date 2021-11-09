@@ -1,5 +1,7 @@
 package com.example.workouttracker.api;
 
+import com.example.workouttracker.model.Exercise;
+import com.example.workouttracker.model.Workout;
 import com.example.workouttracker.model.WorkoutTemplate;
 import com.example.workouttracker.service.ExerciseTemplateService;
 import com.example.workouttracker.service.WorkoutTemplatesService;
@@ -26,5 +28,13 @@ public class WorkoutTemplatesController {
     @PostMapping()
     public WorkoutTemplate addWorkoutTemplate(@RequestBody WorkoutTemplate workoutTemplate) {
         return workoutTemplateService.addWorkoutTemplate(workoutTemplate);
+    }
+
+    @PostMapping("/workouts/{workoutId}/exercise")
+    public void addExerciseToWorkoutTemplate(@PathVariable Long workoutId,
+                                             @RequestBody Exercise exercise) {
+        WorkoutTemplate workoutTemplate = workoutTemplateService.getWorkoutById(workoutId);
+        workoutTemplate.addExercise(exercise);
+        workoutTemplateService.updateWorkoutById(workoutId, workoutTemplate);
     }
 }

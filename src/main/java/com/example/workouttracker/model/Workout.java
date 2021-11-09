@@ -41,11 +41,12 @@ public class Workout {
         this.status = WorkoutStatus.STARTED;
     }
 
-//    public Workout(@JsonProperty("name") String name,
-//                   @JsonProperty("exercises") List<Exercise> exercises) {
-//        this.name = name;
-//        this.exercises = exercises;
-//    }
+    public Workout(@JsonProperty("name") String name,
+                   @JsonProperty("exercises") List<Exercise> exercises) {
+        this.name = name;
+        this.exercises = exercises;
+        this.status = WorkoutStatus.STARTED;
+    }
 
     public Long getId() {
         return id;

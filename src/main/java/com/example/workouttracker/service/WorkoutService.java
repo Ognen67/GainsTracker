@@ -2,6 +2,7 @@ package com.example.workouttracker.service;
 
 import com.example.workouttracker.model.Exercise;
 import com.example.workouttracker.model.Workout;
+import com.example.workouttracker.model.WorkoutTemplate;
 import com.example.workouttracker.model.exception.ExerciseNotFoundException;
 import com.example.workouttracker.model.exception.WorkoutNotFoundException;
 import com.example.workouttracker.repository.ExerciseRepository;
@@ -18,10 +19,13 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
 
+    private final WorkoutTemplatesService workoutTemplatesService;
+
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository) {
+    public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository, WorkoutTemplatesService workoutTemplatesService) {
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
+        this.workoutTemplatesService = workoutTemplatesService;
     }
 
     public Workout getWorkoutById(Long id) {
@@ -63,6 +67,15 @@ public class WorkoutService {
                                           Long exerciseId) {
         Workout workout = this.workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId));
         return workout.getExercises().stream().filter(e -> e.getId().equals(exerciseId)).findFirst().orElseThrow(() -> new ExerciseNotFoundException(exerciseId));
+    }
+
+    public Workout addWorkoutFromTemplate(Long workoutTemplateId) {
+        WorkoutTemplate workoutTemplate = workoutTemplatesService.getWorkoutById(workoutTemplateId);
+
+        Workout workout = new Workout(workoutTemplate.getName());
+        workoutTemplate.getExercises().forEach(workout::addExercise);
+
+        return workoutRepository.save(workout);
     }
 
 //    public Set getSetForExerciseById(Long exerciseId,

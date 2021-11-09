@@ -34,16 +34,16 @@ public class WorkoutTemplate {
     public WorkoutTemplate() {
     }
 
-    public WorkoutTemplate(@JsonProperty("name") String name) {
-        this.name = name;
-        this.exercises = new ArrayList<Exercise>();
-    }
-//
-//    public WorkoutTemplate(@JsonProperty("name") String name,
-//                           @JsonProperty("exercises") List<Exercise> exercises) {
+//    public WorkoutTemplate(@JsonProperty("name") String name) {
 //        this.name = name;
-//        this.exercises = exercises;
+//        this.exercises = new ArrayList<Exercise>();
 //    }
+
+    public WorkoutTemplate(@JsonProperty("name") String name,
+                           @JsonProperty("exercises") List<Exercise> exercises) {
+        this.name = name;
+        this.exercises = exercises;
+    }
 
     public Long getId() {
         return id;
