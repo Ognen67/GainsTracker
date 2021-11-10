@@ -34,6 +34,10 @@ public class WorkoutService {
                 .orElse(null);
     }
 
+    public Workout getWorkoutByName(String name) {
+        return workoutRepository.findWorkoutByName(name);
+    }
+
     public List<Workout> getWorkouts() {
         return workoutRepository.findAll();
     }
@@ -77,7 +81,6 @@ public class WorkoutService {
 
         return workoutRepository.save(workout);
     }
-
 //    public Set getSetForExerciseById(Long exerciseId,
 //                                     Long setId) {
 //        return this.exerciseRepository.getSetFromExerciseById(exerciseId, setId);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Workout {
     private List<Exercise> exercises;
 
     private WorkoutStatus status;
+    private LocalDateTime time;
 
     public List<Exercise> getExercises() {
         return exercises;

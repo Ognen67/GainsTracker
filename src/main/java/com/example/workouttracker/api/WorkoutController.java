@@ -32,6 +32,11 @@ public class WorkoutController {
         return workoutService.getWorkoutById(id);
     }
 
+//    @GetMapping("/workouts/{name}")
+//    public Workout getWorkoutByName(@PathVariable String name) {
+//        return workoutService.getWorkoutByName(name);
+//    }
+
     @GetMapping("/workouts")
     public List<Workout> getAllWorkouts() {
         return workoutService.getWorkouts();
