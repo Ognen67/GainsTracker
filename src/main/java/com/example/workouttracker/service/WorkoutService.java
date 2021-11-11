@@ -2,14 +2,21 @@ package com.example.workouttracker.service;
 
 import com.example.workouttracker.model.Exercise;
 import com.example.workouttracker.model.Workout;
+import com.example.workouttracker.model.WorkoutStatus;
 import com.example.workouttracker.model.WorkoutTemplate;
 import com.example.workouttracker.model.exception.ExerciseNotFoundException;
 import com.example.workouttracker.model.exception.WorkoutNotFoundException;
 import com.example.workouttracker.repository.ExerciseRepository;
 import com.example.workouttracker.repository.WorkoutRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +25,6 @@ public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
-
     private final WorkoutTemplatesService workoutTemplatesService;
 
     @Autowired
@@ -38,8 +44,8 @@ public class WorkoutService {
         return workoutRepository.findWorkoutByName(name);
     }
 
-    public List<Workout> getWorkouts() {
-        return workoutRepository.findAll();
+    public List<Workout> getAllFinishedWorkouts() {
+        return workoutRepository.findWorkoutsByStatus(WorkoutStatus.FINISHED);
     }
 
     public Workout addWorkout(Workout workout) {
@@ -65,6 +71,8 @@ public class WorkoutService {
     private void updateProperties(Workout workout, Workout workoutToUpdate) {
         workoutToUpdate.setName(workout.getName());
         workoutToUpdate.setExercises(workout.getExercises());
+        workoutToUpdate.setStatus(workout.getStatus());
+        workoutToUpdate.setTime(workout.getTime());
     }
 
     public Exercise getExerciseForWorkout(Long workoutId,
@@ -81,8 +89,23 @@ public class WorkoutService {
 
         return workoutRepository.save(workout);
     }
-//    public Set getSetForExerciseById(Long exerciseId,
-//                                     Long setId) {
-//        return this.exerciseRepository.getSetFromExerciseById(exerciseId, setId);
-//    }
+
+    public Optional<Workout> saveTimeForWorkout(Long workoutId, String time) {
+        Workout workout = this.workoutRepository.getById(workoutId);
+
+        String[] timeArr = time.split(":");
+        String hours = "00";
+        String minutes = timeArr[0];
+        String seconds = timeArr[1];
+
+        if (Integer.parseInt(minutes) > 59) {
+            hours = Integer.toString(Integer.parseInt(minutes) / 60);
+            minutes = Integer.toString(Integer.parseInt(minutes) % 60);
+        }
+        LocalTime t = LocalTime.parse(hours + ":" + minutes + ":" + seconds);
+
+        workout.setTime(t);
+        workout.setStatus(WorkoutStatus.FINISHED);
+        return updateWorkoutById(workoutId, workout);
+    }
 }

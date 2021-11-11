@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -38,8 +39,8 @@ public class WorkoutController {
 //    }
 
     @GetMapping("/workouts")
-    public List<Workout> getAllWorkouts() {
-        return workoutService.getWorkouts();
+    public List<Workout> getAllFinishedWorkouts() {
+        return workoutService.getAllFinishedWorkouts();
     }
 
     @PostMapping("/workouts")
@@ -110,6 +111,12 @@ public class WorkoutController {
     @PostMapping("/workouts/addFromTemplate/{workoutTemplateId}")
     public Workout addWorkoutFromTemplate(@PathVariable Long workoutTemplateId) {
         return workoutService.addWorkoutFromTemplate(workoutTemplateId);
+    }
+
+    @PostMapping("/workouts/saveTime/{workoutId}")
+    public Optional<Workout> saveTimeForWorkout(@PathVariable Long workoutId, @RequestBody String time) {
+        // TODO: Finishing workout
+        return workoutService.saveTimeForWorkout(workoutId, time);
     }
 
 }

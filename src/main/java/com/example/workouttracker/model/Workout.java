@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class Workout {
     @OneToMany(cascade = {CascadeType.ALL})
     private List<Exercise> exercises;
 
+    @Enumerated(EnumType.STRING)
     private WorkoutStatus status;
-    private LocalDateTime time;
+    private LocalTime time;
 
     public List<Exercise> getExercises() {
         return exercises;
@@ -66,4 +68,19 @@ public class Workout {
         this.name = name;
     }
 
+    public WorkoutStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(WorkoutStatus status) {
+        this.status = status;
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
 }
