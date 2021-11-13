@@ -17,8 +17,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService {
@@ -78,14 +80,22 @@ public class WorkoutService {
     public Exercise getExerciseForWorkout(Long workoutId,
                                           Long exerciseId) {
         Workout workout = this.workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId));
-        return workout.getExercises().stream().filter(e -> e.getId().equals(exerciseId)).findFirst().orElseThrow(() -> new ExerciseNotFoundException(exerciseId));
+        return workout.getExercises()
+                .stream()
+                .filter(e -> e.getId().equals(exerciseId))
+                .findFirst()
+                .orElseThrow(() -> new ExerciseNotFoundException(exerciseId));
     }
 
     public Workout addWorkoutFromTemplate(Long workoutTemplateId) {
         WorkoutTemplate workoutTemplate = workoutTemplatesService.getWorkoutById(workoutTemplateId);
 
         Workout workout = new Workout(workoutTemplate.getName());
-        workoutTemplate.getExercises().forEach(workout::addExercise);
+//        workoutTemplate.getExercises().forEach(workout::addExercise);
+        workoutTemplate.getExercises()
+                .stream()
+                .map(Exercise::getId)
+                .forEach(exId -> workout.addExercise(exerciseRepository.getById(exId)));
 
         return workoutRepository.save(workout);
     }

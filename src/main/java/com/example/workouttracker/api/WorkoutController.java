@@ -109,8 +109,8 @@ public class WorkoutController {
     // Add Workout from Template
 
     @PostMapping("/workouts/addFromTemplate/{workoutTemplateId}")
-    public Workout addWorkoutFromTemplate(@PathVariable Long workoutTemplateId) {
-        return workoutService.addWorkoutFromTemplate(workoutTemplateId);
+    public Long addWorkoutFromTemplate(@PathVariable Long workoutTemplateId) {
+        return workoutService.addWorkoutFromTemplate(workoutTemplateId).getId();
     }
 
     @PostMapping("/workouts/saveTime/{workoutId}")
